@@ -1057,6 +1057,26 @@ static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event,
     return TRUE;
   }
 
+  /* Handle vim movement keys (hjkl) */
+  if (self->scroll && (!self->search_entry || !gtk_widget_has_focus(self->search_entry))) {
+    if (event->keyval == GDK_KEY_j) {
+      g_signal_emit_by_name(self->scroll, "scroll-child", GTK_SCROLL_STEP_FORWARD, FALSE);
+      return TRUE;
+    }
+    if (event->keyval == GDK_KEY_k) {
+      g_signal_emit_by_name(self->scroll, "scroll-child", GTK_SCROLL_STEP_BACKWARD, FALSE);
+      return TRUE;
+    }
+    if (event->keyval == GDK_KEY_h) {
+      g_signal_emit_by_name(self->scroll, "scroll-child", GTK_SCROLL_STEP_BACKWARD, TRUE);
+      return TRUE;
+    }
+    if (event->keyval == GDK_KEY_l) {
+      g_signal_emit_by_name(self->scroll, "scroll-child", GTK_SCROLL_STEP_FORWARD, TRUE);
+      return TRUE;
+    }
+  }
+
   return FALSE;
 }
 
